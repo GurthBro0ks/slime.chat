@@ -1,4 +1,19 @@
-{$HOSTNAME} {
+http://chat.slimyai.xyz {
+	# Service worker - must be before the catch-all
+	handle /sw.js {
+		root * /srv/pwa
+		file_server
+		header Cache-Control "no-cache"
+		header Service-Worker-Allowed "/"
+	}
+
+	# PWA static assets - serve from host directory
+	handle_path /pwa/* {
+		root * /srv/pwa
+		file_server
+		encode gzip
+	}
+
 	route /api* {
 		uri strip_prefix /api
 		reverse_proxy http://api:14702 {

@@ -1,10 +1,12 @@
-name: stoat
+version: "3.8"
 
 services:
   # MongoDB: Database
   database:
     image: docker.io/mongo
     restart: always
+    ports:
+      - "192.168.68.64:27017:27017"
     volumes:
       - ./data/db:/data/db
     healthcheck:
@@ -58,18 +60,19 @@ services:
           - emojis.minio
     restart: always
 
-  # Caddy: Web server
+  # Caddy: Web server (proxied through host Caddy on port 8080)
   caddy:
     image: docker.io/caddy
     restart: always
     env_file: .env.web
     ports:
-      - "80:80"
-      - "443:443"
+      - "8080:80"
+      - "8443:443"
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
       - ./data/caddy-data:/data
       - ./data/caddy-config:/config
+      - ./pwa-assets:/srv/pwa:ro
 
   # API server
   api:
@@ -207,3 +210,17 @@ services:
     image: ghcr.io/stoatchat/for-web:addb6b7
     restart: always
     env_file: .env.web
+    volumes:
+      - ./custom/slimy-branding.js:/app/dist/slimy-branding.js:ro
+      - ./custom/slimy-branding.css:/app/dist/slimy-branding.css:ro
+      - ./custom/index.html:/app/dist/index.html:ro
+  # SMTP Relay for email
+  smtp:
+    image: docker.io/boky/postfix
+    restart: always
+    environment:
+      - ALLOW_EMPTY_SENDER_DOMAINS=true
+      - POSTFIX_myhostname=chat.slimyai.xyz
+      - POSTFIX_mydomain=slimyai.xyz
+    volumes:
+      - ./data/postfix:/var/spool/postfix

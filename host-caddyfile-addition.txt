@@ -1,0 +1,8 @@
+# ADD THIS TO /etc/caddy/Caddyfile
+# After sudo is fixed, run:
+# sudo tee -a /etc/caddy/Caddyfile < /home/slimy/slimy-chat/host-caddyfile-addition.txt
+# sudo systemctl reload caddy
+
+chat.slimyai.xyz {
+	reverse_proxy localhost:8080
+}
