@@ -1,10 +1,10 @@
 # Version Snapshot — slimy-chat
 
-> Generated: 2026-04-11T22:44:43Z | Host: slimy-nuc1
+> Generated: 2026-04-11T22:47:52Z | Host: slimy-nuc1
 
 ## Git State
 - **Branch:** `main`
-- **HEAD:** `97ef8ca`
+- **HEAD:** `013d9a8`
 - **Last commit:** `2026-04-11` — `docs: auto-sync project docs from slimy-nuc1 2026-04-11`
 - **Remote:** `git@github.com:GurthBro0ks/slime.chat.git`
 - **Dirty:** NO
